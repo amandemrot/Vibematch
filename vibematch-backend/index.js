@@ -10,14 +10,23 @@ import questRoutes from "./routes/questRoutes.js";
 import journalRoutes from "./routes/journalRoutes.js";
 import patternRoutes from "./routes/patternRoutes.js";
 import goalRoutes from "./routes/goalRoutes.js";
-import suggestionRoutes from "./routes/suggestionRoutes.js"; // ✅ Added for Suggestions
+import suggestionRoutes from "./routes/suggestionRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+
+// ✅ Allow both localhost and your Vercel frontend to access the backend
+app.use(
+    cors({
+        origin: ["http://localhost:5175", "https://vibematchfront.vercel.app"],
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    })
+);
+
 app.use(express.json());
 
 // Routes
@@ -27,7 +36,7 @@ app.use("/api/quests", questRoutes);
 app.use("/api/journals", journalRoutes);
 app.use("/api/patterns", patternRoutes);
 app.use("/api/goals", goalRoutes);
-app.use("/api/suggestions", suggestionRoutes); // ✅ Suggestions route
+app.use("/api/suggestions", suggestionRoutes);
 app.use("/api/users", userRoutes);
 
 // Error Handling
