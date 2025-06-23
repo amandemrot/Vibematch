@@ -33,12 +33,13 @@ const Patterns = () => {
 
     const fetchPatterns = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/patterns");
+            const res = await axios.get(`http://localhost:5000/api/patterns?user=${user._id}`);
             setPatterns(res.data);
         } catch (error) {
             console.error("Failed to load patterns:", error);
         }
     };
+
 
     useEffect(() => {
         fetchPatterns();

@@ -26,7 +26,10 @@ export const createGoal = async (req, res) => {
 
 export const getGoals = async (req, res) => {
     try {
-        const goals = await Goal.find().populate("user", "name");
+        const { user } = req.query;
+        if (!user) return res.status(400).json({ message: "User ID required" });
+
+        const goals = await Goal.find({ user }).populate("user", "name");
         res.json(goals);
     } catch (error) {
         console.error("Get goals error:", error.message);

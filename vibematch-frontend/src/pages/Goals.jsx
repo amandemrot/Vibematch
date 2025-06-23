@@ -33,12 +33,13 @@ const Goals = () => {
 
     const fetchGoals = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/goals");
+            const res = await axios.get(`http://localhost:5000/api/goals?user=${user._id}`);
             setGoals(res.data);
         } catch (error) {
             console.error("Failed to load goals:", error);
         }
     };
+
 
     useEffect(() => {
         fetchGoals();

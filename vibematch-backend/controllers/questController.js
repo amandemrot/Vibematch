@@ -4,13 +4,21 @@ import Quest from "../models/Quest.js";
 // @route  GET /api/quests
 export const getQuests = async (req, res) => {
     try {
-        const quests = await Quest.find();
+        let quests = await Quest.find();
+
+        // Add completed: false if it's undefined (data cleanup fallback)
+        quests = quests.map((q) => ({
+            ...q._doc,
+            completed: q.completed === true, // ensure it's a boolean
+        }));
+
         res.status(200).json(quests);
     } catch (error) {
         console.error("❌ Error fetching quests:", error);
         res.status(500).json({ message: "Failed to fetch quests" });
     }
 };
+
 
 // @desc   Mark quest as completed
 // @route  POST /api/quests/complete

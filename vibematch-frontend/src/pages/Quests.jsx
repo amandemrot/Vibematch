@@ -5,7 +5,6 @@ const Quests = () => {
     const [quests, setQuests] = useState([]);
     const [message, setMessage] = useState("");
 
-    // Fetch quests on load
     useEffect(() => {
         const fetchQuests = async () => {
             try {
@@ -15,6 +14,7 @@ const Quests = () => {
                 console.error("Failed to load quests:", err);
             }
         };
+
         fetchQuests();
     }, []);
 
@@ -24,7 +24,7 @@ const Quests = () => {
             setQuests((prev) =>
                 prev.map((q) => (q._id === id ? { ...q, completed: true } : q))
             );
-            setMessage("Quest marked as completed ✅");
+            setMessage("✅ Quest marked as completed");
             setTimeout(() => setMessage(""), 3000);
         } catch (err) {
             console.error("Failed to complete quest:", err);
@@ -33,10 +33,16 @@ const Quests = () => {
     };
 
     return (
-        <div className="p-8 bg-pink-50 min-h-screen">
-            <h2 className="text-3xl font-bold mb-4 text-purple-700">🎯 Your Quests</h2>
+        <div className="p-8 min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-purple-100">
+            <h2 className="text-3xl font-bold mb-6 text-purple-700 flex items-center gap-2">
+                🎯 Your Quests
+            </h2>
 
-            {message && <p className="text-center text-sm mb-4 text-green-600">{message}</p>}
+            {message && (
+                <p className="text-center text-sm mb-4 text-green-700 font-medium">
+                    {message}
+                </p>
+            )}
 
             <div className="space-y-4">
                 {quests.length === 0 ? (
@@ -46,7 +52,9 @@ const Quests = () => {
                         <div
                             key={quest._id}
                             className={`p-4 rounded-xl border shadow ${
-                                quest.completed ? "bg-green-100 border-green-400" : "bg-white"
+                                quest.completed
+                                    ? "bg-green-100 border-green-400"
+                                    : "bg-white border-gray-200"
                             }`}
                         >
                             <h3 className="text-lg font-semibold">{quest.title}</h3>

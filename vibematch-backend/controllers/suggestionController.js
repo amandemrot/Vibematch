@@ -16,7 +16,7 @@ export const createSuggestion = async (req, res) => {
         const newSuggestion = new Suggestion({ text, user: userId });
         await newSuggestion.save();
 
-        await addPoints(userId, 10); // ✅ Add points
+        await addPoints(userId, 10);
         console.log("✅ Suggestion saved:", newSuggestion);
 
         res.status(201).json({ message: "Suggestion saved", suggestion: newSuggestion });
@@ -28,7 +28,10 @@ export const createSuggestion = async (req, res) => {
 
 export const getSuggestions = async (req, res) => {
     try {
-        const suggestions = await Suggestion.find().populate("user", "name");
+        const { user } = req.query;
+        if (!user) return res.status(400).json({ message: "User ID required" });
+
+        const suggestions = await Suggestion.find({ user }).populate("user", "name");
         res.json(suggestions);
     } catch (error) {
         console.error("Get suggestions error:", error.message);

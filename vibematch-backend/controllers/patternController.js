@@ -5,7 +5,6 @@ export const createPattern = async (req, res) => {
     try {
         const { text, user } = req.body;
 
-        // 🔹 Log incoming request body
         console.log("Incoming Pattern Request:", { text, user });
 
         if (!text || !user) {
@@ -20,7 +19,7 @@ export const createPattern = async (req, res) => {
         });
 
         await newPattern.save();
-        console.log("✅ Pattern saved to DB:", newPattern); // 🔹 Confirm save
+        console.log("✅ Pattern saved to DB:", newPattern);
 
         res.status(201).json({ message: "Pattern saved", pattern: newPattern });
     } catch (error) {
@@ -31,7 +30,10 @@ export const createPattern = async (req, res) => {
 
 export const getPatterns = async (req, res) => {
     try {
-        const patterns = await Pattern.find().populate("user", "name");
+        const { user } = req.query;
+        if (!user) return res.status(400).json({ message: "User ID required" });
+
+        const patterns = await Pattern.find({ user }).populate("user", "name");
         res.json(patterns);
     } catch (error) {
         console.error("❌ Get patterns error:", error.message);

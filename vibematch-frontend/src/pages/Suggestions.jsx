@@ -31,14 +31,17 @@ const Suggestions = () => {
         }
     };
 
+
     const fetchSuggestions = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/suggestions");
+            const res = await axios.get(`http://localhost:5000/api/suggestions?user=${user._id}`);
             setSuggestions(res.data);
         } catch (error) {
             console.error("Failed to load suggestions:", error);
         }
     };
+
+
 
     useEffect(() => {
         fetchSuggestions();
