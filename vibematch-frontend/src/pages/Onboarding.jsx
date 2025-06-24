@@ -16,7 +16,7 @@ const Onboarding = () => {
         if (!name || !age || !intention) return;
 
         try {
-            const response = await fetch("https://vibematch-1.onrender.com/api/auth/register", {
+            const response = await fetch("http://localhost:5000/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -29,7 +29,6 @@ const Onboarding = () => {
             });
 
             const data = await response.json();
-            console.log("Backend response:", data);
 
             if (response.ok && data._id) {
                 const fullUser = {
